@@ -458,10 +458,67 @@ section[id],h3[id],.task[id]{scroll-margin-top:70px}
     </svg>
   </div>
 
-  <p>Når V1 hopper fra 0 til 3 V, er kondensatoren tom. Hele spranget ligger først over motstanden, så strømmen starter på $3\text{ V}/1\text{ kΩ}=3$ mA. Etter hvert som kondensatoren lades opp, blir det mindre spenning igjen over motstanden, strømmen avtar, og oppladningen går saktere og saktere. Det gir en eksponentialkurve.</p>
+  <h3>Tenk på en bøtte som fylles gjennom et smalt rør</h3>
+  <p>Kondensatoren er en <strong>bøtte</strong> som lagrer ladning, og spenningen $u_C$ er hvor høyt vannet står. Motstanden er et <strong>smalt rør</strong> inn til bøtta. V1 er en tank med vannstand 3 V.</p>
+  <ul>
+    <li>Når bøtta er tom, er høydeforskjellen mellom tanken og bøtta stor, og det fosser inn. Stor strøm.</li>
+    <li>Etter hvert som bøtta fylles, blir forskjellen mindre, og det renner saktere. Strømmen avtar.</li>
+    <li>Når bøtta står like høyt som tanken, stopper det helt. Ingen strøm, $u_C=3$ V.</li>
+  </ul>
+  <p>Fordi farten hele tiden er proporsjonal med hvor mye som gjenstår, blir kurven en eksponentialfunksjon. Den går fort i starten og flater ut mot slutten, men når aldri helt fram.</p>
+
+  <div class="box key">
+    <h4>To regler som løser nesten alt</h4>
+    <ul>
+      <li><strong>Spenningen over en kondensator kan ikke hoppe.</strong> Den trenger tid for å fylles eller tømmes. Rett etter spranget har $u_C$ samme verdi som rett før.</li>
+      <li><strong>Lenge etter spranget går det ingen strøm</strong> gjennom kondensatoren. Den er full, og oppfører seg som et brudd. Da er det ingen spenning over R heller, så $u_C$ = spenningen fra kilden.</li>
+    </ul>
+    <p style="margin-bottom:0">Kirchhoff binder det sammen: $V_1=u_R+u_C$. Det som ikke ligger over kondensatoren, ligger over motstanden, og strømmen er $i=u_R/R$.</p>
+  </div>
+
+  <h3>Oppskriften: tre tall og én formel</h3>
+  <p>Alle opp- og utladninger i en RC-krets følger samme formel. Du trenger bare å finne tre tall:</p>
+  <ol>
+    <li><strong>Startverdien</strong> $u_\text{start}$: hva $u_C$ var rett før spranget (regel 1).</li>
+    <li><strong>Sluttverdien</strong> $u_\text{slutt}$: hva $u_C$ blir lenge etterpå (regel 2).</li>
+    <li><strong>Tidskonstanten</strong> $\tau=RC$.</li>
+  </ol>
+  $$u_C(t)=u_\text{slutt}+\bigl(u_\text{start}-u_\text{slutt}\bigr)\,e^{-(t-t_0)/\tau}$$
+  <p>Les den slik: «sluttverdien, pluss resten som ennå ikke er borte». Ved $t=t_0$ er $e^0=1$, så du får startverdien. Når $t$ blir stor, går $e^{-\dots}$ mot 0, så du får sluttverdien.</p>
+  <div class="tscroll"><table class="t">
+    <thead><tr><th></th><th>Start</th><th>Slutt</th><th>τ</th><th>Formelen blir</th></tr></thead>
+    <tbody>
+      <tr><td>4a: 0 → 3 V</td><td>0 V</td><td>3 V</td><td>100 µs</td><td>$3+(0-3)e^{-\dots}=3\bigl(1-e^{-(t-t_0)/\tau}\bigr)$</td></tr>
+      <tr><td>4d: 3 → 0 V</td><td>3 V</td><td>0 V</td><td>100 µs</td><td>$0+(3-0)e^{-\dots}=3\,e^{-(t-t_0)/\tau}$</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Følg kretsen tidsskritt for tidsskritt (oppgave 4a)</h3>
+  <p>Sett inn tall, så ser du hva som skjer. $u_C$ øker, $u_R=3-u_C$ minker, og strømmen følger $u_R$:</p>
+  <div class="tscroll"><table class="t">
+    <thead><tr><th>Tid etter spranget</th><th>u<sub>C</sub></th><th>u<sub>R</sub> = 3 − u<sub>C</sub></th><th>i = u<sub>R</sub>/1 kΩ</th></tr></thead>
+    <tbody>
+      <tr><td>0 (rett etter)</td><td>0 V</td><td>3 V</td><td>3 mA</td></tr>
+      <tr><td>τ = 100 µs</td><td>1,90 V</td><td>1,10 V</td><td>1,10 mA</td></tr>
+      <tr><td>2τ = 200 µs</td><td>2,59 V</td><td>0,41 V</td><td>0,41 mA</td></tr>
+      <tr><td>3τ = 300 µs</td><td>2,85 V</td><td>0,15 V</td><td>0,15 mA</td></tr>
+      <tr><td>5τ = 500 µs</td><td>2,98 V</td><td>0,02 V</td><td>0,02 mA</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Rett etter spranget er kondensatoren tom, så den oppfører seg som en ledning. Hele spranget på 3 V havner over motstanden, og strømmen hopper rett til 3 mA. Strømmen kan hoppe, spenningen over C kan ikke.</p>
+
+  <details class="sheet">
+    <summary>Hvorfor blir det akkurat en e-funksjon? (for de som vil se matten)</summary>
+    <div class="in">
+      <p>Kirchhoff: $V_1=Ri+u_C$. Strømmen inn i kondensatoren er $i=C\,\dfrac{du_C}{dt}$. Sett inn:</p>
+      $$RC\,\frac{du_C}{dt}+u_C=U\qquad\Longleftrightarrow\qquad \frac{du_C}{dt}=\frac{U-u_C}{RC}$$
+      <p>Høyresiden sier det samme som bøtta: farten er proporsjonal med det som gjenstår ($U-u_C$). Den eneste funksjonen der endringen er proporsjonal med verdien selv, er eksponentialfunksjonen. Løsningen med $u_C(t_0)=0$ er $u_C=U\bigl(1-e^{-(t-t_0)/RC}\bigr)$. Derfor står $RC$ i nevneren i eksponenten, og derfor heter det tidskonstanten.</p>
+      <p>Sjekk av enheter: $\Omega\cdot\text{F}=\dfrac{\text{V}}{\text{A}}\cdot\dfrac{\text{C}}{\text{V}}=\dfrac{\text{C}}{\text{C/s}}=\text{s}$. RC er virkelig en tid.</p>
+    </div>
+  </details>
 
   <h3>Tidskonstanten τ = RC</h3>
-  <p>$\tau$ forteller hvor fort det skjer. Én verdi du bør kunne utenat:</p>
+  <p>$\tau$ forteller hvor fort det skjer. Stor R (smalt rør) eller stor C (stor bøtte) gir tregere opp- og utladning. Disse prosentene bør du kunne utenat:</p>
   <div class="tscroll"><table class="t">
     <thead><tr><th>Tid etter spranget</th><th>Oppladning: u<sub>C</sub>/U</th><th>Utladning: u<sub>C</sub>/U</th></tr></thead>
     <tbody>
